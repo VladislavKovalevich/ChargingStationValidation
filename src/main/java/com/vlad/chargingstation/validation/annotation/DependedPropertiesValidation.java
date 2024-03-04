@@ -1,4 +1,4 @@
-package com.vlad.chargingstation.validation.annotation.type;
+package com.vlad.chargingstation.validation.annotation;
 
 import com.vlad.chargingstation.validation.validator.DependedPropertiesCustomValidator;
 import jakarta.validation.Constraint;
@@ -18,10 +18,10 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Repeatable(DependedPropertiesValidation.List.class)
 public @interface DependedPropertiesValidation {
-    String filedName();
+    String fieldName();
     String dependFieldName();
 
-    String message() default "Invalid";
+    String message() default "{charging_station.public_station_message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

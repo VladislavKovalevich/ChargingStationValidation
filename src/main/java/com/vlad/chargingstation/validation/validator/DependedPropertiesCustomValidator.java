@@ -1,12 +1,12 @@
 package com.vlad.chargingstation.validation.validator;
 
-import com.vlad.chargingstation.validation.annotation.type.DependedPropertiesValidation;
+import com.vlad.chargingstation.validation.annotation.DependedPropertiesValidation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtils;
 
-public class TitleCustomValidation implements ConstraintValidator<DependedPropertiesValidation, Object> {
+public class DependedPropertiesCustomValidator implements ConstraintValidator<DependedPropertiesValidation, Object> {
 
     private String fieldName;
     private String dependedField;
@@ -14,14 +14,13 @@ public class TitleCustomValidation implements ConstraintValidator<DependedProper
     @SneakyThrows
     @Override
     public void initialize(DependedPropertiesValidation annotation) {
-        this.fieldName = annotation.filedName();
+        this.fieldName = annotation.fieldName();
         this.dependedField = annotation.dependFieldName();
     }
 
     @SneakyThrows
     @Override
     public boolean isValid(Object s, ConstraintValidatorContext ctx) {
-        System.out.println("проверка класса");
         boolean flag = true;
 
         try{
@@ -30,7 +29,7 @@ public class TitleCustomValidation implements ConstraintValidator<DependedProper
 
             if (fieldValue != null && dependFieldValue == null){
                 ctx.disableDefaultConstraintViolation();
-                ctx.buildConstraintViolationWithTemplate(dependedField + " can't be null")
+                ctx.buildConstraintViolationWithTemplate(ctx.getDefaultConstraintMessageTemplate())
                         .addPropertyNode(dependedField)
                         .addConstraintViolation();
                 flag = false;

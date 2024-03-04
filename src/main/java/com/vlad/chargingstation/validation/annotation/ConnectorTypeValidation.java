@@ -14,8 +14,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ConnectorTypeValidator.class)
 @Target( { ElementType.FIELD })
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface ValidateConnectorType {
-    String message() default "Invalid title number";
+public @interface ConnectorTypeValidation {
+    String message() default "{connector.connector_type_message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

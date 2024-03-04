@@ -1,4 +1,4 @@
-package com.vlad.chargingstation.exception;
+package com.vlad.chargingstation.validation;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,9 +27,11 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
         List<ObjectError> errorList = ex.getBindingResult().getAllErrors();
 
         for (ObjectError error : errorList) {
-            String fieldName = ((FieldError)error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
+            if (error instanceof FieldError) {
+                String fieldName = ((FieldError) error).getField();
+                String message = error.getDefaultMessage();
+                errors.put(fieldName, message);
+            }
         }
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
