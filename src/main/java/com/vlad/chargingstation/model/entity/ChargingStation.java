@@ -1,5 +1,6 @@
 package com.vlad.chargingstation.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -42,7 +43,7 @@ public class ChargingStation {
     @Embedded
     private StationLocation location;
 
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinTable(name = "stations_connectors",
             joinColumns = @JoinColumn(name = "station_id"),
     inverseJoinColumns = @JoinColumn(name = "connector_id"))

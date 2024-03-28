@@ -1,13 +1,16 @@
 package com.vlad.chargingstation;
 
+import com.vlad.chargingstation.properties.PropertiesHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication
+@EnableConfigurationProperties(PropertiesHolder.class)
 public class ChargingStationProjectApplication {
 
     public static void main(String[] args) {

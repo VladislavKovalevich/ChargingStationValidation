@@ -2,14 +2,18 @@ package com.vlad.chargingstation.controller.impl;
 
 import com.vlad.chargingstation.controller.ChargingStationManagementController;
 import com.vlad.chargingstation.model.dto.ChargingStationRequestDto;
+import com.vlad.chargingstation.model.dto.ChargingStationResponseDto;
 import com.vlad.chargingstation.service.ChargingStationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/charging_station")
@@ -28,4 +32,13 @@ public class ChargingStationManagementControllerImpl implements ChargingStationM
         String retVal = chargingStationService.createChargingStation(dto);
         return ResponseEntity.ok(retVal);
     }
+
+    @Override
+    @GetMapping
+    public ResponseEntity<List<ChargingStationResponseDto>> getAllStations() {
+        List<ChargingStationResponseDto> stations = chargingStationService.getAllStations();
+        return ResponseEntity.ok(stations);
+    }
+
+
 }

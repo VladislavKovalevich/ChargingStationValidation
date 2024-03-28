@@ -25,13 +25,13 @@ public class ConnectorServiceImpl implements ConnectorService {
         List<StationConnector> result = new ArrayList<>();
 
         for (StationConnector connector: stationConnectors) {
-//            Optional<StationConnector> optional = connectorRepository
-//                    .findStationConnectorByConnectorTypeAndMaxPower(connector.getConnectorType(), connector.getMaxPower());
-//            if (optional.isEmpty()){
-//                result.add(connectorRepository.save(connector));
-//            }else{
-//                result.add(optional.get());
-//            }
+            Optional<StationConnector> optional = connectorRepository
+                    .findStationConnectorByConnectorTypeAndMaxPower(connector.getConnectorType(), connector.getMaxPower());
+            if (optional.isEmpty()){
+                result.add(connectorRepository.save(connector));
+            }else{
+                result.add(optional.get());
+            }
 
         }
 

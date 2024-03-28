@@ -2,14 +2,14 @@ package com.vlad.chargingstation.service.impl;
 
 import com.vlad.chargingstation.mapper.ChargingStationMapper;
 import com.vlad.chargingstation.model.dto.ChargingStationRequestDto;
+import com.vlad.chargingstation.model.dto.ChargingStationResponseDto;
 import com.vlad.chargingstation.model.entity.ChargingStation;
-import com.vlad.chargingstation.model.entity.StationConnector;
 import com.vlad.chargingstation.model.entity.StationStatus;
 import com.vlad.chargingstation.repository.ChargingStationRepository;
 import com.vlad.chargingstation.service.ChargingStationService;
-import com.vlad.chargingstation.service.ConnectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,20 +21,17 @@ public class ChargingStationServiceImpl implements ChargingStationService {
 
     private final ChargingStationRepository chargingStationRepository;
 
-    private final ConnectorService connectorService;
-
     @Autowired
     public ChargingStationServiceImpl(ChargingStationMapper chargingStationMapper,
-                                      ChargingStationRepository chargingStationRepository,
-                                      ConnectorService connectorService) {
+                                      ChargingStationRepository chargingStationRepository) {
 
 
         this.chargingStationMapper = chargingStationMapper;
         this.chargingStationRepository = chargingStationRepository;
-        this.connectorService = connectorService;
     }
 
     @Override
+    @Transactional
     public String createChargingStation(ChargingStationRequestDto dto) {
         ChargingStation chargingStation = chargingStationMapper.mapToEntity(dto);
 
@@ -47,12 +44,15 @@ public class ChargingStationServiceImpl implements ChargingStationService {
             chargingStation.setStationStatus(StationStatus.PRIVATE);
         }
 
-        List<StationConnector> stationConnectors = connectorService.getSavedConnectors(chargingStation.getConnectors());
+        ChargingStation saved = chargingStationRepository.save(chargingStation);
 
-        chargingStation.setConnectors(stationConnectors);
+        return saved.getUuid();
+    }
 
-//        ChargingStation saved = chargingStationRepository.save(chargingStation);
+    @Override
+    public List<ChargingStationResponseDto> getAllStations() {
+        List<ChargingStation> chargingStations = chargingStationRepository.findAll();
 
-        return chargingStation.getUuid();
+        return chargingStationMapper.mapToDtos(chargingStations);
     }
 }
